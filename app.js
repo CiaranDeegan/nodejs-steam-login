@@ -2,7 +2,8 @@ var express = require('express'),
 	passport = require('passport'),
 	session = require('express-session'),
 	SteamStrategy = require('passport-steam').Strategy,
-	authRoutes = require('./routes/auth');
+	authRoutes = require('./routes/auth'),
+	config = require('./config.js');
 
 var appBaseURL = "http://localhost:3000";
 var port = process.env.PORT || 3000;
@@ -19,7 +20,7 @@ passport.deserializeUser(function(id, done){
 passport.use(new SteamStrategy({
 	returnURL: appBaseURL + '/auth/steam/return',
 	realm: appBaseURL,
-	apiKey: '441DE37E3BC3585F0A7AE7DA997FEDCC'
+	apiKey: config.steam_api_key
 }, function(identifier, profile, done){
 	process.nextTick(function()
 	{
