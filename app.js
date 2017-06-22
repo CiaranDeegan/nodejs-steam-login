@@ -26,10 +26,7 @@ passport.use(new SteamStrategy({
 	{
 		//Check if user exists in DB
 		User.find({steam_id: profile.id}, function(err, users){
-			if(err)
-			{
-				throw err;
-			}
+			if(err) throw err;
 			if(users.length === 0)
 			{
 				//User does not exist, create new entry
@@ -41,10 +38,7 @@ passport.use(new SteamStrategy({
 
 				newUser.save(function(err)
 				{
-					if(err)
-					{
-						throw err;
-					}
+					if(err) throw err;
 					console.log('New user ' + profile.displayName + '[' + profile.id + '] created');
 				});
 			}
@@ -75,10 +69,7 @@ app.get('/', function(req, res)
 	{
 		//Find user in DB and pass their user object to the page
 		User.find({steam_id: req.user}, function(err, users){
-			if(err)
-			{
-				throw err;
-			}
+			if(err) throw err;
 			res.render('index', {user: users[0]});
 		});
 	}
@@ -91,10 +82,7 @@ app.get('/', function(req, res)
 
 app.get('/account', ensureAuthenticated, function(req, res){
 	User.find({steam_id: req.user}, function(err, users){
-		if(err)
-		{
-			throw err;
-		}
+		if(err) throw err;
 		res.render('account', {user: users[0]});
 	});
 });
@@ -111,9 +99,6 @@ app.listen(config.port, function(){
 });
 
 function ensureAuthenticated(req, res, next){
-	if(req.isAuthenticated())
-	{
-		return next();
-	}
+	if(req.isAuthenticated()) return next();
 	res.redirect('/');
 }
