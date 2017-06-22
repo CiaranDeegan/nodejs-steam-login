@@ -22,30 +22,27 @@ passport.use(new SteamStrategy({
 	realm: config.app_base_url,
 	apiKey: config.steam_api_key
 }, function(identifier, profile, done){
-	process.nextTick(function()
-	{
-		//Check if user exists in DB
-		User.find({steam_id: profile.id}, function(err, users){
-			if(err) throw err;
-			if(users.length === 0)
-			{
-				//User does not exist, create new entry
-				var newUser = User({
-					steam_id: profile.id,
-					username: profile.displayName,
-					photo_url: profile.photos[2].value
-				});
+	//Check if user exists in DB
+	User.findOne({steam_id: profile.id}, function(err, user){
+		if(err) throw err;
+		if(!user)
+		{
+			//User does not exist, create new entry
+			var newUser = User({
+				steam_id: profile.id,
+				username: profile.displayName,
+				photo_url: profile.photos[2].value
+			});
 
-				newUser.save(function(err)
-				{
-					if(err) throw err;
-					console.log('New user ' + profile.displayName + '[' + profile.id + '] created');
-				});
-			}
-		});
-		profile.identifier = identifier;
-		return done(null, profile);
-	})
+			newUser.save(function(err)
+			{
+				if(err) throw err;
+				console.log('New user ' + profile.displayName + '[' + profile.id + '] created');
+			});
+		}
+	});
+	profile.identifier = identifier;
+	return done(null, profile);
 }));
 
 var app = express();
@@ -68,9 +65,9 @@ app.get('/', function(req, res)
 	if(req.user)
 	{
 		//Find user in DB and pass their user object to the page
-		User.find({steam_id: req.user}, function(err, users){
+		User.findOne({steam_id: req.user}, function(err, user){
 			if(err) throw err;
-			res.render('index', {user: users[0]});
+			res.render('index', {user: user});
 		});
 	}
 	else
@@ -81,9 +78,9 @@ app.get('/', function(req, res)
 });
 
 app.get('/account', ensureAuthenticated, function(req, res){
-	User.find({steam_id: req.user}, function(err, users){
+	User.findOne({steam_id: req.user}, function(err, user){
 		if(err) throw err;
-		res.render('account', {user: users[0]});
+		res.render('account', {user: user});
 	});
 });
 
