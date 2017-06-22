@@ -9,12 +9,20 @@ var express = require('express'),
 
 mongoose.connect(config.db_url);
 
+//Determine data to be stored in session
 passport.serializeUser(function(user, done){
-	done(null, user.id);
+	//save JSON data to session
+	done(null, user._json);
 });
 
-passport.deserializeUser(function(id, done){
-	done(null, id);
+//Match session data with DB data and parse
+passport.deserializeUser(function(obj, done){
+	//Search DB for user with session's steam ID
+	User.findOne({steam_id: obj.steamid},
+		(err, user) => {
+			//Fetched object is attached to request object (req.user)
+			done(err, user);
+		});
 });
 
 passport.use(new SteamStrategy({
@@ -62,26 +70,11 @@ app.use(express.static(__dirname + 'public'));
 
 app.get('/', function(req, res)
 {
-	if(req.user)
-	{
-		//Find user in DB and pass their user object to the page
-		User.findOne({steam_id: req.user}, function(err, user){
-			if(err) throw err;
-			res.render('index', {user: user});
-		});
-	}
-	else
-	{
-		//User has not signed in yet
-		res.render('index', {user: req.user});
-	}
+	res.render('index', {user: req.user});
 });
 
 app.get('/account', ensureAuthenticated, function(req, res){
-	User.findOne({steam_id: req.user}, function(err, user){
-		if(err) throw err;
-		res.render('account', {user: user});
-	});
+	res.render('account', {user: req.user});
 });
 
 app.get('/logout', function(req, res){
