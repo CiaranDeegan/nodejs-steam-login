@@ -36,8 +36,8 @@ app.set('view engine', 'ejs');
 
 app.use(session({
 	secret: 's3cr3tStr1nG',
-	name: 'some session ID',
-	saveUninitialized: true
+	saveUninitialized: false,
+	resave: true
 }));
 
 app.use(passport.initialize());
