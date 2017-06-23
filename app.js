@@ -1,7 +1,8 @@
-var express = require('express'),
+const express = require('express'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
 	session = require('express-session'),
+	SteamCommunity = require('steamcommunity'),
 	SteamStrategy = require('passport-steam').Strategy,
 	authRoutes = require('./routes/auth'),
 	User = require('./models/user'),
@@ -53,7 +54,7 @@ passport.use(new SteamStrategy({
 	return done(null, profile);
 }));
 
-var app = express();
+const app = express();
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
@@ -75,6 +76,14 @@ app.get('/', function(req, res)
 
 app.get('/account', ensureAuthenticated, function(req, res){
 	res.render('account', {user: req.user});
+});
+
+const community = new SteamCommunity();
+app.get('/inventory', ensureAuthenticated, function(req, res){
+	community.getUserInventoryContents(req.user.steam_id, 440, 2, true, (err, inv) => {
+		if(err) throw err;
+		res.render('inventory', {user: req.user, items: inv});
+	});
 });
 
 app.get('/logout', function(req, res){
