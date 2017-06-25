@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="steamLogin">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script>
+    <script src="controllers/authController.js"></script>
+    <script src="controllers/userController.js"></script>
+    <script src="controllers/invController.js"></script>
+    <script src="services/userService.js"></script>
+    <script src="services/invService.js"></script>
+    <script src="core.js"></script>
+</head>
+<body>
+<div>
+    <a href='/'><- Back</a></br></br>
+    <div ng-controller="mainUserController">
+        <p><img ng-src="{{user.photo_url}}"></p>
+        <p>ID: {{user.steam_id}}</p>
+        <p>Name: {{user.username}}</p>
+        <p>Full JSON: {{user}}</p>
+    </div>
+</div>
+</body>
+</html>

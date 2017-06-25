@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="steamLogin">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script>
+    <script src="controllers/userController.js"></script>
+    <script src="controllers/authController.js"></script>
+    <script src="controllers/invController.js"></script>
+    <script src="services/invService.js"></script>
+    <script src="services/userService.js"></script>
+    <script src="core.js"></script>
+</head>
+<body>
+<div ng-controller="loginStatusController" data-ng-init="isLoggedIn()">
+    <div ng-hide="loggedIn">
+        <h2>Welcome! Please log in.</h2>
+        <p><a href='auth/steam'><img src='https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_01.png'/></a></p>
+    </div>
+    <div ng-show="loggedIn">
+        <h2>Hello, {{username}}. - <a href='logout'>Logout</a></h2>
+    </div>
+</div>
+<p><a href='account'>See Account Information</a></p>
+<p><a href='inventory'>See Inventory</a></p>
+</body>
+</html>

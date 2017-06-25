@@ -5,6 +5,7 @@ const express = require('express'),
 	SteamStrategy = require('passport-steam').Strategy,
 	authRoutes = require('./routes/auth'),
 	appRoutes = require('./routes/app'),
+	apiRoutes = require('./routes/api'),
 	User = require('./models/user'),
 	config = require('./config');
 
@@ -55,10 +56,6 @@ passport.use(new SteamStrategy({
 
 const app = express();
 
-//Define view engine and template files
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
-
 //Initialise session
 app.use(session({
 	secret: 's3cr3tStr1nG',
@@ -71,11 +68,12 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //Point to static asset directory
-app.use(express.static(__dirname + 'public'));
+app.use(express.static('public'));
 
 //Define routes
 app.use('/', appRoutes);
 app.use('/auth', authRoutes);
+app.use('/api', apiRoutes);
 
 //Start server
 app.listen(config.port, function(){
