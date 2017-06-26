@@ -16,8 +16,15 @@
 <body>
 
 <a href='/'><- Back</a></br></br>
-<div ng-controller="mainInvController">
-    {{inventory}}
+<div class="container" ng-controller="mainInvController">
+    <div class="row" ng-repeat="item in inventory" ng-if="$index % 6 == 0">
+        <div class="two columns"><img class="u-max-full-width" src="http://cdn.steamcommunity.com/economy/image/{{inventory[$index].icon_url}}" title="{{inventory[$index].market_name}}"/></div>
+        <div class="two columns" ng-if="inventory.length > ($index + 1)"><img class="u-max-full-width" src="http://cdn.steamcommunity.com/economy/image/{{inventory[$index + 1].icon_url}}" title="{{inventory[$index + 1].market_name}}"/></div>
+        <div class="two columns" ng-if="inventory.length > ($index + 2)"><img class="u-max-full-width" src="http://cdn.steamcommunity.com/economy/image/{{inventory[$index + 2].icon_url}}" title="{{inventory[$index + 2].market_name}}"/></div>
+        <div class="two columns" ng-if="inventory.length > ($index + 3)"><img class="u-max-full-width" src="http://cdn.steamcommunity.com/economy/image/{{inventory[$index + 3].icon_url}}" title="{{inventory[$index + 3].market_name}}"/></div>
+        <div class="two columns" ng-if="inventory.length > ($index + 4)"><img class="u-max-full-width" src="http://cdn.steamcommunity.com/economy/image/{{inventory[$index + 4].icon_url}}" title="{{inventory[$index + 4].market_name}}"/></div>
+        <div class="two columns" ng-if="inventory.length > ($index + 5)"><img class="u-max-full-width" src="http://cdn.steamcommunity.com/economy/image/{{inventory[$index + 5].icon_url}}" title="{{inventory[$index + 5].market_name}}"/></div>
+    </div>
 </div>
 
 </body>
