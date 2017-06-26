@@ -5,6 +5,7 @@
     <title>Title</title>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/skeleton.css">
+    <link rel="stylesheet" href="css/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script>
     <script src="controllers/userController.js"></script>
     <script src="controllers/authController.js"></script>
@@ -17,6 +18,11 @@
 
 <a href='/'><- Back</a></br></br>
 <div class="container" ng-controller="mainInvController">
+    <div class="spinner" ng-hide="invReady">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+    </div>
     <div class="row" ng-repeat="item in inventory" ng-if="$index % 6 == 0">
         <div class="two columns"><img class="u-max-full-width" src="http://cdn.steamcommunity.com/economy/image/{{inventory[$index].icon_url}}" title="{{inventory[$index].market_name}}"/></div>
         <div class="two columns" ng-if="inventory.length > ($index + 1)"><img class="u-max-full-width" src="http://cdn.steamcommunity.com/economy/image/{{inventory[$index + 1].icon_url}}" title="{{inventory[$index + 1].market_name}}"/></div>
